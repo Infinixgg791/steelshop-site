@@ -257,51 +257,33 @@
       <h2>Выберите категорию товара</h2>
       <button class="category-btn" data-cat="diamonds">💎 Алмазы</button>
       <button class="category-btn" data-cat="vouchers">🎟 Ваучеры</button>
-      <button class="category-btn" data-cat="passes">🚀 Пропуски</button>
+      <button class="category-btn" data-cat="passes">🚀 Пропуск прокачки</button>
       <button class="category-btn" data-cat="evoaccess">㊙️ Evo Access</button>
       <button class="back-button" id="backFromCategories">← Назад</button>
     </div>
 
-    <!-- Товары -->
+    <!-- Список товаров -->
     <div id="products" class="menu" tabindex="0" aria-label="Список товаров">
       <h2 id="productsTitle"></h2>
       <div id="productsList" role="list"></div>
       <button class="back-button" id="backFromProducts">← Назад</button>
     </div>
 
-    <!-- Детали товара -->
-    <div id="productDetails" class="menu" tabindex="0" aria-label="Детали товара">
-      <h2 id="productName"></h2>
-      <p id="productDescription"></p>
-      <p><b>Цена:</b> <span id="productPrice"></span>₽</p>
-      <p>💳 Переведите деньги на карту:<br/><b>2202 2083 5415 7282</b></p>
-      <p>❗ В комментарии к оплате укажите свой ID аккаунта!<br/>📦 Товар выдаётся в течение 1–10 часов.</p>
-      <button class="back-button" id="backFromProductDetails">← Назад</button>
-    </div>
-
     <!-- Поддержка -->
-    <div id="support" class="menu" tabindex="0" aria-label="Контакты поддержки">
-      <h2>Поддержка</h2>
-      <div id="supportList"></div>
+    <div id="support" class="menu" tabindex="0" aria-label="Поддержка">
+      <h2>Поддержка SteelShopFF</h2>
+      <p>Свяжитесь с нами в <a href="https://t.me/SteelShopFFSupport" target="_blank" rel="noopener noreferrer">Telegram</a> или напишите в чат <a href="https://t.me/SteelShopFFChat" target="_blank" rel="noopener noreferrer">SteelShopFFChat</a>.</p>
       <button class="back-button" id="backFromSupport">← Назад</button>
-    </div>
-
-    <div class="footer" aria-hidden="true">
-      <div>© SteelShopFF</div>
-      <div class="links">
-        <a href="https://t.me/SteelShopFF" target="_blank" rel="noopener noreferrer">Канал</a> |
-        <a href="https://t.me/SteelShopFFChat" target="_blank" rel="noopener noreferrer">Чат</a> |
-        <a href="https://t.me/SteelShopFFOtzivi" target="_blank" rel="noopener noreferrer">Отзывы</a>
-      </div>
     </div>
   </div>
 
 <script>
+  // Данные товаров с описаниями
   const DIAMONDS = {
-    "💎 100+10 алмазов": 103,
-    "💎 310+31 алмазов": 315,
-    "💎 520+52 алмазов": 515,
-    "💎 1060+106 алмазов": 1050
+    "💎 100+10 алмазов": [103, "100 алмазов + 10 бонусных алмазов."],
+    "💎 310+31 алмазов": [315, "310 алмазов + 31 бонусный алмаз."],
+    "💎 520+52 алмазов": [515, "520 алмазов + 52 бонусных алмаза."],
+    "💎 1060+106 алмазов": [1050, "1060 алмазов + 106 бонусных алмазов."]
   };
 
   const VOUCHERS = {
@@ -311,122 +293,128 @@
   };
 
   const PASSES = {
-    "🚀 Пропуск прокачки 6LVL": 60,
-    "🚀 Пропуск прокачки 10LVL": 73,
-    "🚀 Пропуск прокачки 15LVL": 73,
-    "🚀 Пропуск прокачки 20LVL": 73,
-    "🚀 Пропуск прокачки 25LVL": 77,
-    "🚀 Пропуск прокачки 30LVL": 100
+    "🚀 Пропуск прокачки 6LVL": [60, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"],
+    "🚀 Пропуск прокачки 10LVL": [73, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"],
+    "🚀 Пропуск прокачки 15LVL": [73, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"],
+    "🚀 Пропуск прокачки 20LVL": [73, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"],
+    "🚀 Пропуск прокачки 25LVL": [77, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"],
+    "🚀 Пропуск прокачки 30LVL": [100, "⚠️ Внимание! Купить пропуск прокачки можно только если он ЕСТЬ У ВАС В ИГРЕ. Проверьте перед пополнением, иначе пропуск пропадет!"]
   };
 
   const EVOACCESS = {
-    "㊙️ Evo Access 30 дней": 290,
-    "㊙️ Evo Access 7 дней": 110,
-    "㊙️ Evo Access 3 дня": 66
+    "㊙️ Evo Access 30 дней": [290, "Доступ к эксклюзивному контенту и функциям в течение 30 дней."],
+    "㊙️ Evo Access 7 дней": [110, "Доступ к эксклюзивному контенту и функциям в течение 7 дней."],
+    "㊙️ Evo Access 3 дня": [66, "Доступ к эксклюзивному контенту и функциям в течение 3 дней."]
   };
 
-  const SUPPORT_CONTACTS = [
-    "👨‍💻 Владелец: @Fuisknnn",
-    "💰 Менеджер: @SKILIX",
-    "⚠️ Проблема? пиши нам."
-  ];
+  // Элементы интерфейса
+  const menu = document.getElementById('menu');
+  const prices = document.getElementById('prices');
+  const categories = document.getElementById('categories');
+  const products = document.getElementById('products');
+  const support = document.getElementById('support');
 
-  function showSection(id) {
-    document.querySelectorAll('.menu').forEach(el => el.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+  // Кнопки главного меню
+  const btnPrices = document.getElementById('btnPrices');
+  const btnBuy = document.getElementById('btnBuy');
+  const btnSupport = document.getElementById('btnSupport');
+
+  // Кнопки назад
+  const backFromPrices = document.getElementById('backFromPrices');
+  const backFromCategories = document.getElementById('backFromCategories');
+  const backFromProducts = document.getElementById('backFromProducts');
+  const backFromSupport = document.getElementById('backFromSupport');
+
+  // Список товаров и заголовок
+  const productsList = document.getElementById('productsList');
+  const productsTitle = document.getElementById('productsTitle');
+
+  // Функция показа меню по id
+  function showMenu(id) {
+    [menu, prices, categories, products, support].forEach(m => {
+      if (m.id === id) {
+        m.classList.add('active');
+        m.setAttribute('tabindex', '0');
+        m.focus();
+      } else {
+        m.classList.remove('active');
+        m.setAttribute('tabindex', '-1');
+      }
+    });
   }
 
-  document.getElementById('btnPrices').addEventListener('click', () => {
-    showSection('prices');
+  // Открыть цены
+  btnPrices.addEventListener('click', () => {
+    showMenu('prices');
   });
 
-  document.getElementById('btnBuy').addEventListener('click', () => {
-    showSection('categories');
+  backFromPrices.addEventListener('click', () => {
+    showMenu('menu');
   });
 
-  document.getElementById('btnSupport').addEventListener('click', () => {
-    const supportDiv = document.getElementById('supportList');
-    supportDiv.innerHTML = SUPPORT_CONTACTS.map(c => `<p>${c}</p>`).join('');
-    showSection('support');
+  // Открыть покупку (категории)
+  btnBuy.addEventListener('click', () => {
+    showMenu('categories');
   });
 
-  document.getElementById('backFromPrices').addEventListener('click', () => {
-    showSection('menu');
+  backFromCategories.addEventListener('click', () => {
+    showMenu('menu');
   });
 
-  document.getElementById('backFromCategories').addEventListener('click', () => {
-    showSection('menu');
+  // Открыть поддержку
+  btnSupport.addEventListener('click', () => {
+    showMenu('support');
   });
 
-  document.getElementById('backFromSupport').addEventListener('click', () => {
-    showSection('menu');
+  backFromSupport.addEventListener('click', () => {
+    showMenu('menu');
   });
 
-  document.querySelectorAll('.category-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cat = btn.getAttribute('data-cat');
-      let productsObj;
-      let title = '';
+  // Обработчик выбора категории
+  document.querySelectorAll('.category-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const cat = button.getAttribute('data-cat');
+      let data = null;
       switch(cat) {
-        case 'diamonds':
-          productsObj = DIAMONDS;
-          title = '💎 Алмазы';
-          break;
-        case 'vouchers':
-          productsObj = VOUCHERS;
-          title = '🎟 Ваучеры';
-          break;
-        case 'passes':
-          productsObj = PASSES;
-          title = '🚀 Пропуски';
-          break;
-        case 'evoaccess':
-          productsObj = EVOACCESS;
-          title = '㊙️ Evo Access';
-          break;
-        default:
-          productsObj = {};
+        case 'diamonds': data = DIAMONDS; productsTitle.textContent = '💎 Алмазы'; break;
+        case 'vouchers': data = VOUCHERS; productsTitle.textContent = '🎟 Ваучеры'; break;
+        case 'passes': data = PASSES; productsTitle.textContent = '🚀 Пропуск прокачки'; break;
+        case 'evoaccess': data = EVOACCESS; productsTitle.textContent = '㊙️ Evo Access'; break;
       }
-
-      const productsList = document.getElementById('productsList');
-      productsList.innerHTML = '';
-      for (const [name, val] of Object.entries(productsObj)) {
-        let price, desc = '';
-        if (Array.isArray(val)) {
-          price = val[0];
-          desc = val[1];
-        } else {
-          price = val;
-        }
-        const prodElem = document.createElement('div');
-        prodElem.classList.add('product-item');
-        prodElem.setAttribute('role', 'listitem');
-        prodElem.innerHTML = `<div class="product-title">${name}</div>
-                              <div class="product-price">${price}₽</div>
-                              <div class="desc">${desc || 'Нет описания.'}</div>`;
-        prodElem.addEventListener('click', () => {
-          document.getElementById('productName').textContent = name;
-          document.getElementById('productPrice').textContent = price;
-          document.getElementById('productDescription').textContent = desc || 'Нет описания.';
-          showSection('productDetails');
-        });
-        productsList.appendChild(prodElem);
+      if (data) {
+        renderProducts(data);
+        showMenu('products');
       }
-
-      document.getElementById('productsTitle').textContent = title;
-      showSection('products');
     });
   });
 
-  document.getElementById('backFromProducts').addEventListener('click', () => {
-    showSection('categories');
+  // Назад из списка товаров
+  backFromProducts.addEventListener('click', () => {
+    showMenu('categories');
   });
 
-  document.getElementById('backFromProductDetails').addEventListener('click', () => {
-    showSection('products');
-  });
+  // Рендер списка товаров
+  function renderProducts(data) {
+    productsList.innerHTML = '';
+    for (const [name, info] of Object.entries(data)) {
+      const price = info[0];
+      const desc = info[1] || '';
+      const item = document.createElement('div');
+      item.className = 'product-item';
+      item.setAttribute('role', 'listitem');
+      item.setAttribute('tabindex', '0');
+      item.innerHTML = `
+        <div class="product-title">${name}</div>
+        <div class="product-price">${price}₽</div>
+        <div class="desc">${desc}</div>
+      `;
+      productsList.appendChild(item);
+    }
+  }
 
-  window.Telegram.WebApp.ready();
+  // Изначально показываем главное меню
+  showMenu('menu');
 </script>
+
 </body>
 </html>
