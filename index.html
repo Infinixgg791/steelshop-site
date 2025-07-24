@@ -2,60 +2,78 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>SteelShopFF</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  /* Ламповый плавный перелив фона */
   @keyframes warmGradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
-  body {
+  html, body {
     margin: 0; 
-    padding: 20px;
+    padding: 0;
+    height: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(270deg, #ff7e5f, #feb47b, #ff6a88, #ffb347);
     background-size: 800% 800%;
     animation: warmGradient 20s ease infinite;
     color: #f0e6d2;
-    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 12px;
+    box-sizing: border-box;
+    min-height: 100vh;
   }
 
   .container {
-    max-width: 480px;
-    width: 100%;
     background: rgba(20, 10, 0, 0.85);
     border-radius: 15px;
     box-shadow: 0 8px 30px rgba(255, 140, 60, 0.4);
-    padding: 30px 25px 40px 25px;
+    padding: 20px 18px 30px 18px;
     backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 480px;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   h1 {
     color: #ffbd69;
-    text-align: center;
     font-weight: 900;
     font-size: 2.4rem;
-    margin-bottom: 25px;
+    margin: 0 0 20px 0;
+    text-align: center;
     text-shadow: 0 0 6px #ffbd69aa;
+    flex-shrink: 0;
+  }
+
+  .menu {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  /* Скрываем все меню по умолчанию */
+  .menu:not(.active) {
+    display: none;
   }
 
   h2 {
     color: #ffbd69;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
     text-shadow: 0 0 4px #ffbd6955;
   }
 
@@ -64,15 +82,17 @@
     border: none;
     border-radius: 12px;
     color: #4a2e00;
-    padding: 12px 22px;
-    margin: 8px 6px;
+    padding: 14px 0;
+    margin: 8px 0;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 1.25rem;
     font-weight: 700;
-    text-decoration: none;
+    text-align: center;
+    user-select: none;
     box-shadow: 0 4px 10px rgba(255, 179, 71, 0.5);
     transition: all 0.3s ease;
-    user-select: none;
+    width: 100%;
+    display: inline-block;
   }
   button:hover, a.button:hover {
     background: linear-gradient(135deg, #ffcc33, #ffb347);
@@ -83,21 +103,16 @@
     transform: scale(0.97);
   }
 
-  .menu, .category, .products, .product-details, .support {
-    display: none;
-  }
-  .active {
-    display: block;
-  }
-
   .product-item {
     border: 1px solid #ffa94d88;
     border-radius: 14px;
-    margin: 14px 0;
-    padding: 16px;
+    margin: 8px 0;
+    padding: 14px 16px;
     background: rgba(255, 179, 71, 0.1);
     box-shadow: 0 2px 12px rgba(255, 179, 71, 0.15);
     transition: background 0.3s ease;
+    cursor: pointer;
+    user-select: none;
   }
   .product-item:hover {
     background: rgba(255, 179, 71, 0.22);
@@ -106,13 +121,13 @@
   .product-title {
     font-weight: 800;
     color: #ffd88c;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 6px;
     text-shadow: 0 0 3px #ffbb0055;
   }
 
   .product-price {
-    font-size: 1.15em;
+    font-size: 1.2rem;
     margin: 6px 0 10px 0;
     font-weight: 700;
     color: #ff9f00;
@@ -121,18 +136,18 @@
 
   .desc {
     color: #f7d59ccc;
-    font-size: 0.95em;
+    font-size: 1rem;
     line-height: 1.3;
-    margin-bottom: 10px;
     font-style: italic;
   }
 
   .back-button {
-    margin-top: 16px;
+    margin-top: 12px;
     background: #8a5d1c;
     color: #ffe0a0;
     box-shadow: 0 3px 9px #b87e23aa;
     font-weight: 600;
+    font-size: 1.1rem;
   }
   .back-button:hover {
     background: #a27626;
@@ -140,7 +155,7 @@
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.4;
     color: #f9e7c1cc;
   }
@@ -152,8 +167,8 @@
 
   .footer {
     text-align: center;
-    font-size: 0.9em;
-    margin-top: 36px;
+    font-size: 0.9rem;
+    margin-top: 18px;
     color: #b88732aa;
     user-select: none;
   }
@@ -161,7 +176,7 @@
   .links a {
     color: #ffcc66;
     text-decoration: none;
-    margin: 0 10px;
+    margin: 0 8px;
     font-weight: 600;
     transition: color 0.3s ease;
   }
@@ -170,10 +185,10 @@
     text-shadow: 0 0 4px #ffd88cbb;
   }
 
-  /* Scrollbar for product list if needed */
+  /* Скролл для списка товаров */
   #productsList {
-    max-height: 300px;
     overflow-y: auto;
+    flex: 1 1 auto;
     padding-right: 6px;
   }
   #productsList::-webkit-scrollbar {
@@ -189,27 +204,27 @@
 </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" role="main" aria-label="SteelShopFF интерфейс">
     <h1>SteelShopFF</h1>
 
     <!-- Главное меню -->
-    <div id="menu" class="menu active">
-      <button id="btnPrices">💰 Цены</button>
-      <button id="btnBuy">🛒 Купить</button>
-      <div style="margin-top: 20px;">
-        <a href="https://t.me/SteelShopFF" target="_blank" class="button">📢 Канал</a>
-        <a href="https://t.me/SteelShopFFChat" target="_blank" class="button">💬 Чат</a>
+    <div id="menu" class="menu active" tabindex="0" aria-label="Главное меню">
+      <button id="btnPrices" aria-describedby="descPrices">💰 Цены</button>
+      <button id="btnBuy" aria-describedby="descBuy">🛒 Купить</button>
+      <div style="margin-top: 16px;">
+        <a href="https://t.me/SteelShopFF" target="_blank" class="button" rel="noopener noreferrer">📢 Канал</a>
+        <a href="https://t.me/SteelShopFFChat" target="_blank" class="button" rel="noopener noreferrer">💬 Чат</a>
       </div>
       <div style="margin-top: 12px;">
-        <a href="https://t.me/SteelShopFFOtzivi" target="_blank" class="button">🌟 Отзывы</a>
-        <button id="btnSupport" class="button">🛠 Поддержка</button>
+        <a href="https://t.me/SteelShopFFOtzivi" target="_blank" class="button" rel="noopener noreferrer">🌟 Отзывы</a>
+        <button id="btnSupport" class="button" aria-describedby="descSupport">🛠 Поддержка</button>
       </div>
     </div>
 
     <!-- Цены -->
-    <div id="prices" class="menu">
+    <div id="prices" class="menu" tabindex="0" aria-label="Цены на товары">
       <h2>💰 Цены</h2>
-      <pre style="white-space: pre-wrap; font-family: inherit; color: #f5deb3;">
+      <pre style="white-space: pre-wrap; font-family: inherit; color: #f5deb3; font-size:1rem;">
 💎 Алмазы:
 • 100+10 — 103₽
 • 310+31 — 315₽
@@ -238,7 +253,7 @@
     </div>
 
     <!-- Категории -->
-    <div id="categories" class="menu">
+    <div id="categories" class="menu" tabindex="0" aria-label="Категории товаров">
       <h2>Выберите категорию товара</h2>
       <button class="category-btn" data-cat="diamonds">💎 Алмазы</button>
       <button class="category-btn" data-cat="vouchers">🎟 Ваучеры</button>
@@ -248,14 +263,14 @@
     </div>
 
     <!-- Товары -->
-    <div id="products" class="menu">
+    <div id="products" class="menu" tabindex="0" aria-label="Список товаров">
       <h2 id="productsTitle"></h2>
-      <div id="productsList"></div>
+      <div id="productsList" role="list"></div>
       <button class="back-button" id="backFromProducts">← Назад</button>
     </div>
 
     <!-- Детали товара -->
-    <div id="productDetails" class="menu">
+    <div id="productDetails" class="menu" tabindex="0" aria-label="Детали товара">
       <h2 id="productName"></h2>
       <p id="productDescription"></p>
       <p><b>Цена:</b> <span id="productPrice"></span>₽</p>
@@ -265,24 +280,23 @@
     </div>
 
     <!-- Поддержка -->
-    <div id="support" class="menu">
+    <div id="support" class="menu" tabindex="0" aria-label="Контакты поддержки">
       <h2>Поддержка</h2>
       <div id="supportList"></div>
       <button class="back-button" id="backFromSupport">← Назад</button>
     </div>
 
-    <div class="footer">
+    <div class="footer" aria-hidden="true">
       <div>© SteelShopFF</div>
       <div class="links">
-        <a href="https://t.me/SteelShopFF" target="_blank">Канал</a> |
-        <a href="https://t.me/SteelShopFFChat" target="_blank">Чат</a> |
-        <a href="https://t.me/SteelShopFFOtzivi" target="_blank">Отзывы</a>
+        <a href="https://t.me/SteelShopFF" target="_blank" rel="noopener noreferrer">Канал</a> |
+        <a href="https://t.me/SteelShopFFChat" target="_blank" rel="noopener noreferrer">Чат</a> |
+        <a href="https://t.me/SteelShopFFOtzivi" target="_blank" rel="noopener noreferrer">Отзывы</a>
       </div>
     </div>
   </div>
 
 <script>
-  // (Твой существующий JS код без изменений)
   const DIAMONDS = {
     "💎 100+10 алмазов": 103,
     "💎 310+31 алмазов": 315,
@@ -314,7 +328,7 @@
   const SUPPORT_CONTACTS = [
     "👨‍💻 Владелец: @Fuisknnn",
     "💰 Менеджер: @SKILIX",
-    "⚠️ случилась проблема? напиши в поддержку."
+    "⚠️ Проблема? пиши нам."
   ];
 
   function showSection(id) {
@@ -322,11 +336,6 @@
     document.getElementById(id).classList.add('active');
   }
 
-  function showMenu() {
-    showSection('menu');
-  }
-
-  // Кнопки главного меню
   document.getElementById('btnPrices').addEventListener('click', () => {
     showSection('prices');
   });
@@ -336,21 +345,23 @@
   });
 
   document.getElementById('btnSupport').addEventListener('click', () => {
-    let supportDiv = document.getElementById('supportList');
+    const supportDiv = document.getElementById('supportList');
     supportDiv.innerHTML = SUPPORT_CONTACTS.map(c => `<p>${c}</p>`).join('');
     showSection('support');
   });
 
-  // Назад из цен
-  document.getElementById('backFromPrices').addEventListener('click', showMenu);
+  document.getElementById('backFromPrices').addEventListener('click', () => {
+    showSection('menu');
+  });
 
-  // Назад из категорий
-  document.getElementById('backFromCategories').addEventListener('click', showMenu);
+  document.getElementById('backFromCategories').addEventListener('click', () => {
+    showSection('menu');
+  });
 
-  // Назад из поддержки
-  document.getElementById('backFromSupport').addEventListener('click', showMenu);
+  document.getElementById('backFromSupport').addEventListener('click', () => {
+    showSection('menu');
+  });
 
-  // Категории товаров
   document.querySelectorAll('.category-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const cat = btn.getAttribute('data-cat');
@@ -389,9 +400,10 @@
         }
         const prodElem = document.createElement('div');
         prodElem.classList.add('product-item');
+        prodElem.setAttribute('role', 'listitem');
         prodElem.innerHTML = `<div class="product-title">${name}</div>
                               <div class="product-price">${price}₽</div>
-                              <div class="desc">${desc}</div>`;
+                              <div class="desc">${desc || 'Нет описания.'}</div>`;
         prodElem.addEventListener('click', () => {
           document.getElementById('productName').textContent = name;
           document.getElementById('productPrice').textContent = price;
@@ -406,17 +418,14 @@
     });
   });
 
-  // Назад из списка товаров
   document.getElementById('backFromProducts').addEventListener('click', () => {
     showSection('categories');
   });
 
-  // Назад из деталей товара
   document.getElementById('backFromProductDetails').addEventListener('click', () => {
     showSection('products');
   });
 
-  // Подключение к Telegram WebApp
   window.Telegram.WebApp.ready();
 </script>
 </body>
