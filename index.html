@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SteelShopFF</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  body {
+    margin: 0; padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+  }
+  h1 {
+    color: #00ffd5;
+    text-align: center;
+  }
+  button, a.button {
+    background: #00aabb;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px 18px;
+    margin: 6px 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  button:hover, a.button:hover {
+    background: #008899;
+  }
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .menu, .category, .products, .product-details, .support {
+    display: none;
+  }
+  .active {
+    display: block;
+  }
+  .product-item {
+    border: 1px solid #222;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 12px;
+    background: #121212;
+  }
+  .product-title {
+    font-weight: 700;
+    color: #00ffd5;
+  }
+  .product-price {
+    font-size: 1.1em;
+    margin: 6px 0;
+  }
+  .desc {
+    color: #aaa;
+    font-size: 0.9em;
+  }
+  .back-button {
+    margin-top: 10px;
+    background: #555;
+  }
+  .footer {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 30px;
+    color: #555;
+  }
+  .links a {
+    color: #00aabb;
+    text-decoration: none;
+    margin: 0 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>SteelShopFF</h1>
+
+    <!-- Главное меню -->
+    <div id="menu" class="menu active">
+      <button id="btnPrices">💰 Цены</button>
+      <button id="btnBuy">🛒 Купить</button>
+      <div style="margin-top: 20px;">
+        <a href="https://t.me/SteelShopFF" target="_blank" class="button">📢 Канал</a>
+        <a href="https://t.me/SteelShopFFChat" target="_blank" class="button">💬 Чат</a>
+      </div>
+      <div style="margin-top: 12px;">
+        <a href="https://t.me/SteelShopFFOtzivi" target="_blank" class="button">🌟 Отзывы</a>
+        <button id="btnSupport" class="button">🛠 Поддержка</button>
+      </div>
+    </div>
+
+    <!-- Цены -->
+    <div id="prices" class="menu">
+      <h2>💰 Цены</h2>
+      <pre style="white-space: pre-wrap; font-family: inherit;">
+💎 Алмазы:
+• 100+10 — 103₽
+• 310+31 — 315₽
+• 520+52 — 515₽
+• 1060+106 — 1050₽
+
+🎟 Ваучеры:
+• Ваучер на неделю — 208₽
+• Ваучер на месяц — 889₽
+• Ваучер Lite — 64₽
+
+㊙️ Evo Access:
+• 30 дней — 290₽
+• 7 дней — 110₽
+• 3 дня — 66₽
+
+🚀 Пропуск прокачки:
+• 6LVL — 60₽
+• 10LVL — 73₽
+• 15LVL — 73₽
+• 20LVL — 73₽
+• 25LVL — 77₽
+• 30LVL — 100₽
+      </pre>
+      <button class="back-button" id="backFromPrices">← Назад</button>
+    </div>
+
+    <!-- Категории -->
+    <div id="categories" class="menu">
+      <h2>Выберите категорию товара</h2>
+      <button class="category-btn" data-cat="diamonds">💎 Алмазы</button>
+      <button class="category-btn" data-cat="vouchers">🎟 Ваучеры</button>
+      <button class="category-btn" data-cat="passes">🚀 Пропуски</button>
+      <button class="category-btn" data-cat="evoaccess">㊙️ Evo Access</button>
+      <button class="back-button" id="backFromCategories">← Назад</button>
+    </div>
+
+    <!-- Товары -->
+    <div id="products" class="menu">
+      <h2 id="productsTitle"></h2>
+      <div id="productsList"></div>
+      <button class="back-button" id="backFromProducts">← Назад</button>
+    </div>
+
+    <!-- Детали товара -->
+    <div id="productDetails" class="menu">
+      <h2 id="productName"></h2>
+      <p id="productDescription"></p>
+      <p><b>Цена:</b> <span id="productPrice"></span>₽</p>
+      <p>💳 Переведите деньги на карту:<br/><b>2202 2083 5415 7282</b></p>
+      <p>❗ В комментарии к оплате укажите свой ID аккаунта!<br/>📦 Товар выдаётся в течение 1–10 часов.</p>
+      <button class="back-button" id="backFromProductDetails">← Назад</button>
+    </div>
+
+    <!-- Поддержка -->
+    <div id="support" class="menu">
+      <h2>Поддержка</h2>
+      <div id="supportList"></div>
+      <button class="back-button" id="backFromSupport">← Назад</button>
+    </div>
+
+    <div class="footer">
+      <div>© SteelShopFF</div>
+      <div class="links">
+        <a href="https://t.me/SteelShopFF" target="_blank">Канал</a> |
+        <a href="https://t.me/SteelShopFFChat" target="_blank">Чат</a> |
+        <a href="https://t.me/SteelShopFFOtzivi" target="_blank">Отзывы</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Данные товаров из бота
+  const DIAMONDS = {
+    "💎 100+10 алмазов": 103,
+    "💎 310+31 алмазов": 315,
+    "💎 520+52 алмазов": 515,
+    "💎 1060+106 алмазов": 1050
+  };
+
+  const VOUCHERS = {
+    "⚡ Ваучер на неделю": [208, "Ваучер на неделю даёт 100 алмазов сразу и 50 алмазов ежедневно в течение 7 дней."],
+    "⚡ Ваучер на месяц": [889, "Ваучер на месяц даёт 500 алмазов сразу и 70 алмазов ежедневно в течение 30 дней."],
+    "⚡ Ваучер Lite (неделя)": [64, "Lite ваучер на неделю даёт 20 алмазов сразу и 70 алмазов в течение недели."]
+  };
+
+  const PASSES = {
+    "Пропуск прокачки - 6LVL 🚀": [60, "⚠️ Купить можно только если пропуск есть в игре."],
+    "Пропуск прокачки - 10LVL 🚀": [73, "⚠️ Купить можно только если пропуск есть в игре."],
+    "Пропуск прокачки - 15LVL 🚀": [73, "⚠️ Купить можно только если пропуск есть в игре."],
+    "Пропуск прокачки - 20LVL 🚀": [73, "⚠️ Купить можно только если пропуск есть в игре."],
+    "Пропуск прокачки - 25LVL 🚀": [77, "⚠️ Купить можно только если пропуск есть в игре."],
+    "Пропуск прокачки - 30LVL 🚀": [100, "⚠️ Купить можно только если пропуск есть в игре."]
+  };
+
+  const EVO_ACCESS = {
+    "Evo Access (30 дней)": [290, "㊙️ Бесплатный доступ к Эво-Пушкам, питомцам, персонажам, медали, чату. Привилегии могут меняться."],
+    "Evo Access (7 дней)": [110, "㊙️ Бесплатный доступ к Эво-Пушкам, питомцам, персонажам, медали, чату. Привилегии могут меняться."],
+    "Evo Access (3 дня)": [66, "㊙️ Бесплатный доступ к Эво-Пушкам, питомцам, персонажам, медали, чату. Привилегии могут меняться."]
+  };
+
+  // Поддержка (статусы из бота)
+  const SUPPORT_USERS = {
+    Fuisknnn: true,
+    SKILIX: true
+  };
+
+  // Хелперы переключения меню
+  function showSection(id) {
+    document.querySelectorAll('.menu').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Главное меню кнопки
+  document.getElementById('btnPrices').onclick = () => showSection('prices');
+  document.getElementById('backFromPrices').onclick = () => showSection('menu');
+
+  document.getElementById('btnBuy').onclick = () => showSection('categories');
+  document.getElementById('backFromCategories').onclick = () => showSection('menu');
+
+  document.getElementById('btnSupport').onclick = () => {
+    showSection('support');
+    const onlineUsers = Object.entries(SUPPORT_USERS)
+      .filter(([_, online]) => online)
+      .map(([user]) => '@' + user);
+
+    const supportDiv = document.getElementById('supportList');
+    if (onlineUsers.length) {
+      supportDiv.innerHTML = "🟢 Поддержка онлайн:<br>" + onlineUsers.join('<br>');
+    } else {
+      supportDiv.innerHTML = "🔴 Поддержка сейчас оффлайн.";
+    }
+  };
+  document.getElementById('backFromSupport').onclick = () => showSection('menu');
+
+  // Категории товаров
+  document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.onclick = () => {
+      const cat = btn.dataset.cat;
+      showSection('products');
+
+      let products = {};
+      let title = "";
+      if(cat === 'diamonds') {
+        products = DIAMONDS;
+        title = "💎 Алмазы";
+      } else if(cat === 'vouchers') {
+        products = VOUCHERS;
+        title = "🎟 Ваучеры";
+      } else if(cat === 'passes') {
+        products = PASSES;
+        title = "🚀 Пропуски прокачки";
+      } else if(cat === 'evoaccess') {
+        products = EVO_ACCESS;
+        title = "㊙️ Evo Access";
+      }
+      document.getElementById('productsTitle').textContent = title;
+
+      const listDiv = document.getElementById('productsList');
+      listDiv.innerHTML = "";
+      for(const [name, val] of Object.entries(products)) {
+        const price = Array.isArray(val) ? val[0] : val;
+        const desc = Array.isArray(val) ? val[1] : "";
+        const item = document.createElement('div');
+        item.className = 'product-item';
+        item.innerHTML = `<div class="product-title">${name}</div>
+          <div class="product-price">${price}₽</div>
+          ${desc ? `<div class="desc">${desc}</div>` : ''}
+          <button class="buy-btn">Купить</button>`;
+        // На клик по купить показываем детали
+        item.querySelector('.buy-btn').onclick = () => {
+          showSection('productDetails');
+          document.getElementById('productName').textContent = name;
+          document.getElementById('productPrice').textContent = price;
+          document.getElementById('productDescription').textContent = desc || "Без описания";
+        };
+        listDiv.appendChild(item);
+      }
+    };
+  });
+
+  document.getElementById('backFromProducts').onclick = () => showSection('categories');
+  document.getElementById('backFromProductDetails').onclick = () => showSection('products');
+
+  // Инициализация при загрузке
+  window.onload = () => {
+    showSection('menu');
+  };
+</script>
+</body>
+</html>
