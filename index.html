@@ -2,204 +2,113 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SteelShopFF</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  @keyframes warmGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  html, body {
-    margin: 0; 
-    padding: 0;
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(270deg, #ff7e5f, #feb47b, #ff6a88, #ffb347);
-    background-size: 800% 800%;
-    animation: warmGradient 20s ease infinite;
-    color: #f0e6d2;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
   body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 12px;
-    box-sizing: border-box;
-    min-height: 100vh;
+    background: #1a1a1a;
+    color: #f5deb3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 16px;
   }
-
-  .container {
-    background: rgba(20, 10, 0, 0.85);
-    border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(255, 140, 60, 0.4);
-    padding: 20px 18px 30px 18px;
-    backdrop-filter: blur(10px);
-    width: 100%;
-    max-width: 480px;
-    max-height: 95vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  h1 {
-    color: #ffbd69;
-    font-weight: 900;
-    font-size: 2.4rem;
-    margin: 0 0 20px 0;
+  h1, h2 {
     text-align: center;
-    text-shadow: 0 0 6px #ffbd69aa;
-    flex-shrink: 0;
+    color: #ffc107;
   }
-
-  .menu {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
-  /* Скрываем все меню по умолчанию */
-  .menu:not(.active) {
-    display: none;
-  }
-
-  h2 {
-    color: #ffbd69;
-    font-weight: 700;
-    margin: 0 0 15px 0;
-    text-shadow: 0 0 4px #ffbd6955;
-  }
-
-  button, a.button {
+  button, .button {
     background: linear-gradient(135deg, #ffb347, #ffcc33);
     border: none;
     border-radius: 12px;
+    padding: 10px 16px;
+    margin: 6px 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255,179,71,0.6);
     color: #4a2e00;
-    padding: 14px 0;
-    margin: 8px 0;
-    cursor: pointer;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    user-select: none;
-    box-shadow: 0 4px 10px rgba(255, 179, 71, 0.5);
-    transition: all 0.3s ease;
-    width: 100%;
-    display: inline-block;
+    transition: transform 0.2s ease;
   }
-  button:hover, a.button:hover {
-    background: linear-gradient(135deg, #ffcc33, #ffb347);
-    box-shadow: 0 6px 16px rgba(255, 204, 51, 0.8);
-    color: #3a2200;
+  button:hover, .button:hover {
+    transform: scale(1.05);
   }
-  button:active {
-    transform: scale(0.97);
-  }
-
-  .product-item {
-    border: 1px solid #ffa94d88;
-    border-radius: 14px;
-    margin: 8px 0;
-    padding: 14px 16px;
-    background: rgba(255, 179, 71, 0.1);
-    box-shadow: 0 2px 12px rgba(255, 179, 71, 0.15);
-    transition: background 0.3s ease;
-    cursor: pointer;
+  .container {
+    max-width: 460px;
+    margin: auto;
     user-select: none;
   }
-  .product-item:hover {
-    background: rgba(255, 179, 71, 0.22);
+  .menu {
+    display: none;
   }
-
-  .product-title {
-    font-weight: 800;
-    color: #ffd88c;
-    font-size: 1.3rem;
-    margin-bottom: 6px;
-    text-shadow: 0 0 3px #ffbb0055;
+  .menu.active {
+    display: block;
   }
-
-  .product-price {
-    font-size: 1.2rem;
-    margin: 6px 0 10px 0;
-    font-weight: 700;
-    color: #ff9f00;
-    text-shadow: 0 0 2px #ff9f0055;
-  }
-
-  .desc {
-    color: #f7d59ccc;
-    font-size: 1rem;
-    line-height: 1.3;
-    font-style: italic;
-  }
-
   .back-button {
-    margin-top: 12px;
-    background: #8a5d1c;
-    color: #ffe0a0;
-    box-shadow: 0 3px 9px #b87e23aa;
+    background: #4a2e00;
+    color: #ffc107;
+    margin-top: 18px;
+    box-shadow: none;
+  }
+  #productsList button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 8px 0;
+    background: linear-gradient(135deg, #ffcc33, #ffb347);
     font-weight: 600;
-    font-size: 1.1rem;
   }
-  .back-button:hover {
-    background: #a27626;
-    box-shadow: 0 4px 14px #d0a13cbb;
+  pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #332b14;
+    padding: 12px;
+    border-radius: 10px;
+    color: #f5deb3;
   }
-
-  p {
-    font-size: 1.1rem;
-    line-height: 1.4;
-    color: #f9e7c1cc;
-  }
-
-  p b {
-    color: #ffb347;
-    text-shadow: 0 0 3px #ffb347aa;
-  }
-
   .footer {
     text-align: center;
-    font-size: 0.9rem;
-    margin-top: 18px;
-    color: #b88732aa;
-    user-select: none;
-  }
-
-  .links a {
-    color: #ffcc66;
-    text-decoration: none;
-    margin: 0 8px;
+    color: #7a5a00;
     font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  .links a:hover {
-    color: #ffd88c;
-    text-shadow: 0 0 4px #ffd88cbb;
+    margin-top: 40px;
   }
 
-  /* Скролл для списка товаров */
-  #productsList {
-    overflow-y: auto;
-    flex: 1 1 auto;
-    padding-right: 6px;
+  /* Модальное окно */
+  #modal {
+    display: none;
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
   }
-  #productsList::-webkit-scrollbar {
-    width: 8px;
+  #modalContentWrapper {
+    background: #fff8e1;
+    border-radius: 15px;
+    max-width: 350px;
+    padding: 24px;
+    box-shadow: 0 6px 20px rgba(255,179,71,0.7);
+    color: #4a2e00;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    user-select: text;
+    text-align: center;
   }
-  #productsList::-webkit-scrollbar-thumb {
-    background: #ffb347bb;
-    border-radius: 6px;
+  #closeModal {
+    margin-top: 18px;
+    padding: 10px 16px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #4a2e00;
+    box-shadow: 0 4px 10px rgba(255,179,71,0.5);
+    transition: all 0.3s ease;
   }
-  #productsList::-webkit-scrollbar-track {
-    background: transparent;
+  #closeModal:hover {
+    background: linear-gradient(135deg, #ffcc33, #ffb347);
   }
 </style>
 </head>
@@ -224,7 +133,7 @@
     <!-- Цены -->
     <div id="prices" class="menu" tabindex="0" aria-label="Цены на товары">
       <h2>💰 Цены</h2>
-      <pre style="white-space: pre-wrap; font-family: inherit; color: #f5deb3; font-size:1rem;">
+      <pre>
 💎 Алмазы:
 • 100+10 — 103₽
 • 310+31 — 315₽
@@ -274,127 +183,131 @@
     </div>
   </div>
 
+  <!-- Модальное окно -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalContentWrapper">
+    <div id="modalContentWrapper">
+      <div id="modalContent" style="white-space: pre-wrap;"></div>
+      <button id="closeModal" aria-label="Закрыть окно">Закрыть</button>
+    </div>
+  </div>
+
 <script>
   // Данные товаров по категориям
   const productsData = {
     diamonds: {
-      '100+10 алмазов': [103, 'Бонус 10 алмазов к 100'],
-      '310+31 алмаз': [315, 'Бонус 31 алмаз к 310'],
-      '520+52 алмазов': [515, 'Бонус 52 алмаза к 520'],
-      '1060+106 алмазов': [1050, 'Бонус 106 алмазов к 1060'],
+      '100+10 алмазов': 103,
+      '310+31 алмаз': 315,
+      '520+52 алмазов': 515,
+      '1060+106 алмазов': 1050,
     },
     vouchers: {
-      'Ваучер на неделю': [208, 'Доступ на 7 дней'],
-      'Ваучер на месяц': [889, 'Доступ на 30 дней'],
-      'Ваучер Lite': [64, 'Ограниченный доступ'],
+      'Ваучер на неделю': 208,
+      'Ваучер на месяц': 889,
+      'Ваучер Lite': 64,
     },
     passes: {
-      'Пропуск 6LVL': [60, 'Прокачка до 6 уровня'],
-      'Пропуск 10LVL': [73, 'Прокачка до 10 уровня'],
-      'Пропуск 15LVL': [73, 'Прокачка до 15 уровня'],
-      'Пропуск 20LVL': [73, 'Прокачка до 20 уровня'],
-      'Пропуск 25LVL': [77, 'Прокачка до 25 уровня'],
-      'Пропуск 30LVL': [100, 'Прокачка до 30 уровня'],
+      'Пропуск 6LVL': 60,
+      'Пропуск 10LVL': 73,
+      'Пропуск 15LVL': 73,
+      'Пропуск 20LVL': 73,
+      'Пропуск 25LVL': 77,
+      'Пропуск 30LVL': 100,
     },
     evo: {
-      'Evo Access 30 дней': [290, 'Доступ на 30 дней'],
-      'Evo Access 7 дней': [110, 'Доступ на 7 дней'],
-      'Evo Access 3 дня': [66, 'Доступ на 3 дня'],
+      'Evo Access 30 дней': 290,
+      'Evo Access 7 дней': 110,
+      'Evo Access 3 дня': 66,
     }
   };
 
-  const menu = document.getElementById('menu');
+  // Элементы
+  const menuMain = document.getElementById('menu');
   const prices = document.getElementById('prices');
   const categories = document.getElementById('categories');
   const products = document.getElementById('products');
   const productsList = document.getElementById('productsList');
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modalContent');
+  const closeModalBtn = document.getElementById('closeModal');
 
   // Кнопки меню
-  const btnPrices = document.getElementById('btnPrices');
-  const btnBuy = document.getElementById('btnBuy');
-  const btnSupport = document.getElementById('btnSupport');
+  document.getElementById('btnPrices').onclick = () => {
+    showMenu('prices');
+  };
+  document.getElementById('btnBuy').onclick = () => {
+    showMenu('categories');
+  };
+
+  document.getElementById('btnSupport').onclick = () => {
+    alert('Свяжитесь с нами в Telegram: https://t.me/SteelShopFFSupport');
+  };
 
   // Кнопки назад
-  const backFromPrices = document.getElementById('backFromPrices');
-  const backFromCategories = document.getElementById('backFromCategories');
-  const backFromProducts = document.getElementById('backFromProducts');
+  document.getElementById('backFromPrices').onclick = () => showMenu('menu');
+  document.getElementById('backFromCategories').onclick = () => showMenu('menu');
+  document.getElementById('backFromProducts').onclick = () => showMenu('categories');
 
-  // Показать нужный экран, скрыть остальные
-  function showScreen(screen) {
-    [menu, prices, categories, products].forEach(s => s.classList.remove('active'));
-    screen.classList.add('active');
+  // Категории — создаём товары по клику
+  const categoryButtons = document.querySelectorAll('.category-btn');
+  categoryButtons.forEach(btn => {
+    btn.onclick = () => {
+      const cat = btn.getAttribute('data-cat');
+      showProducts(cat);
+    };
+  });
+
+  // Функции показа меню
+  function showMenu(name) {
+    menuMain.classList.remove('active');
+    prices.classList.remove('active');
+    categories.classList.remove('active');
+    products.classList.remove('active');
+
+    if(name === 'menu') menuMain.classList.add('active');
+    else if(name === 'prices') prices.classList.add('active');
+    else if(name === 'categories') categories.classList.add('active');
+    else if(name === 'products') products.classList.add('active');
   }
 
-  btnPrices.addEventListener('click', () => {
-    showScreen(prices);
-  });
-
-  backFromPrices.addEventListener('click', () => {
-    showScreen(menu);
-  });
-
-  btnBuy.addEventListener('click', () => {
-    showScreen(categories);
-  });
-
-  backFromCategories.addEventListener('click', () => {
-    showScreen(menu);
-  });
-
-  backFromProducts.addEventListener('click', () => {
-    showScreen(categories);
-  });
-
-  btnSupport.addEventListener('click', () => {
-    alert('Для поддержки пишите в чат @SteelShopFFChat');
-  });
-
-  // При выборе категории — показать товары этой категории
-  categories.querySelectorAll('.category-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      const cat = button.getAttribute('data-cat');
-      if (productsData[cat]) {
-        renderProducts(productsData[cat]);
-        showScreen(products);
-      }
-    });
-  });
-
-  // Отобразить список товаров
-  function renderProducts(data) {
+  // Показать товары категории
+  function showProducts(category) {
     productsList.innerHTML = '';
-    for (const [name, info] of Object.entries(data)) {
-      const price = info[0];
-      const desc = info[1] || '';
-      const item = document.createElement('div');
-      item.className = 'product-item';
-      item.setAttribute('role', 'listitem');
-      item.setAttribute('tabindex', '0');
-      item.innerHTML = `
-        <div class="product-title">${name}</div>
-        <div class="product-price">${price}₽</div>
-        <div class="desc">${desc}</div>
-      `;
-
-      // Обработчик клика — показать сообщение с выбором товара
-      item.addEventListener('click', () => {
-        alert(`Вы выбрали товар:\n${name}\nЦена: ${price}₽`);
-      });
-
-      // Для удобства можно добавить обработку клавиши Enter
-      item.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          item.click();
-        }
-      });
-
-      productsList.appendChild(item);
+    const items = productsData[category];
+    for(let itemName in items) {
+      const price = items[itemName];
+      const btn = document.createElement('button');
+      btn.textContent = `${itemName} — ${price}₽`;
+      btn.onclick = () => showPaymentModal(itemName, price);
+      productsList.appendChild(btn);
     }
+    showMenu('products');
   }
 
-  // Изначально показываем главное меню
-  showScreen(menu);
+  // Показать модальное окно с инструкцией
+  function showPaymentModal(itemName, price) {
+    // Текст инструкции
+    const text = `💵 Переведите ${price} рублей на карту:\n\n` +
+      `2202208354157282\n\n` +
+      `За товар:\n${itemName}\n\n` +
+      `❗ В комментарии к оплате укажите свой ID аккаунта!\n\n` +
+      `📦 Товар выдаётся в течение 1–10 часов.`;
+
+    modalContent.textContent = text;
+    modal.style.display = 'flex';
+  }
+
+  // Закрыть модал
+  closeModalBtn.onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  // Закрывать модал кликом по фону
+  modal.onclick = (e) => {
+    if(e.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+
 </script>
 </body>
 </html>
